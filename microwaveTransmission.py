@@ -12,8 +12,8 @@ layerFileDef = ('config'+os.sep+'layers'+os.sep+'layers.txt')
 simFileDef   = ('config'+os.sep+'simulation'+os.sep+'simInputs.txt')
 
 #Default save location
-saveLoc = os.path.abspath('Data/')
-plotLoc = os.path.abspath('Plots/')
+saveLoc = os.path.abspath('Data')
+plotLoc = os.path.abspath('Plots')
 
 #Default save header
 saveHdr = "%-11s%-26s%-26s%-26s%-26s%-26s%-26s" % ("Freq [GHz]", "P Trans (mean +/- std)", "S Trans (mean +/- std)", "P Refl (mean +/- std)", "S Refl (mean +/- std)", "P Absorb (mean +/- std)", "S Absorb (mean +/- std)")
@@ -54,9 +54,9 @@ output = sim.calc()
 #Write output to a text file
 fhandle = layerFile.split('.')[0].split('/')[-1]
 if fhandle == '':
-    fname = 'simOutput.txt'
+    fname = ('%s%ssimOutput.txt' % (saveLoc, os.sep))
 else:
-    fname = ('%ssimOutput_%s.txt' % (saveLoc, fhandle))
+    fname = ('%s%ssimOutput_%s.txt' % (saveLoc, os.sep, fhandle))
 np.savetxt(fname, np.array(output).T, fmt="%-12.4f", header=saveHdr)
 
 #Plot transmission
