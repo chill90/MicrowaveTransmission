@@ -1,0 +1,20 @@
+#All temporary files
+*~
+*.pyc
+
+#All data files
+Data/*
+!Data/README.me
+
+#All plots
+Plots/*
+!Plots/README.me
+
+#All configuration files -- keep these locally, or upload to a different repo
+config/layers/*
+!config/layers/layers.txt
+
+#All simulation input files -- keep these locally, or upload to a different repo
+config/simulation/*
+!config/simulation/simInputs.txt
+
