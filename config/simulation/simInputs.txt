@@ -7,11 +7,11 @@
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
 | Low Freq      | [GHz] | 50.00           | Lowest frequency to be analyzed                                             |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
-| High Freq     | [GHz] | 200.0           | Highest frequency to be analyzed                                            |
+| High Freq     | [GHz] | 250.0           | Highest frequency to be analyzed                                            |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
-| Freq Step     | [GHz] | 1.000           | Frequency step between low and high frequencies.                            |
+| Freq Step     | [GHz] | 0.500           | Frequency step between low and high frequencies.                            |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
-| Num Trials    |  NA   | 30              | Number of trials to evaluate the simulation.                                |
+| Num Trials    |  NA   | 50              | Number of trials to evaluate the simulation.                                |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
 | Sim Method    |  NA   | HOU             | Simulation method. Allowed values = 'HOU'                                   |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+

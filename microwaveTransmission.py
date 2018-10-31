@@ -19,12 +19,13 @@ plotLoc = os.path.abspath('Plots')
 saveHdr = "%-11s%-26s%-26s%-26s%-26s%-26s%-26s" % ("Freq [GHz]", "P Trans (mean +/- std)", "S Trans (mean +/- std)", "P Refl (mean +/- std)", "S Refl (mean +/- std)", "P Absorb (mean +/- std)", "S Absorb (mean +/- std)")
 
 #For now, only ability is to simulate using Hou code
-allowedCmds = ['LF', 'SF']
-allowedVals = ['HOU']
+allowedCmds = ['LF', 'SF', 'OP']
+allowedInst = ['UMich_Reflectometer']
 def help(val):
     print ("\nERROR: could not understand '%s'" % (val))
     print ("Usage: python microwaveTransmission.py -lf [layerFile] -sf [simFile] -nt [1] -sm [HOU]")
-    print ("-lf: file that contains the dielectric layer parameters. Default value = %s" % (layerFileDef))
+    print ("-lf: layer file(s) that contains the dielectric layer parameters. Default value = %s" % (layerFileDef))
+    print ("-dt: data file(s) that contain tranmission/reflection/absorption vs frequency. File must contain indicator of setup = %s" % (','.join(allowedInst)))
     print ("-sf: file that contains the simulation inputs. Default value = %s" % (simFileDef))
     print ("Allowed simulation methods are:")
     print ("'HOU': uses matrix formalism laid out in Hou et al. Not suitable for birefringent stacks")
@@ -33,32 +34,55 @@ def help(val):
 #Collect command-line arguments
 argstr = ' '.join(sy.argv[1:])
 args = argstr.split('-')[1:]
-layerFile = layerFileDef
-simFile   = simFileDef
+layerFiles = []
+dataFiles  = []
+simFile    = simFileDef
 for arg in args:
-    cmd, val = arg.split()
+    cmd = arg.split()[0]; vals = list(arg.split()[1:])
     if cmd.upper() not in allowedCmds:
         help(cmd)
     if cmd.upper() == 'LF':
-        layerFile = str(val)
-        if not os.path.isfile(layerFile):
-            sy.exit("\nERROR: could not find layer file '%s'\n" % (layerFile))
+        layerFiles = vals
+        for layerFile in layerFiles:
+            if not os.path.isfile(layerFile):
+                sy.exit("\nERROR: could not find layer file '%s'\n" % (layerFile))
     elif cmd.upper() == 'SM':
-        simFile = str(val)
-        if not os.path.isfile(layerFile):
-            sy.exit("\nERROR: could not find sim file '%s'\n" % (layerFile))
+        simFile = val
+        if not os.path.isfile(simFile):
+            sy.exit("\nERROR: could not find sim file '%s'\n" % (simFile))
+    elif cmd.upper() == 'DT':
+        dataFiles = vals
+        for dataFile in dataFiles:
+            if not os.path.isfile(dataFile):
+                sy.exit("\nERROR: could not find data file '%s'\n" % (dataFiles))
+            inst = None
+            for instrument in allowedInst:
+                if instrument in opFile:
+                    inst = instrument
+            if inst is None:
+                print ("\nERROR: could not indenfity allowed instrument in passed file '%s' for overplotting" % (dataFile))
+                help(cmd)
 
-#Calculate transmission
-sim = sm.Simulate(layerFile=os.path.abspath(layerFile), simFile=os.path.abspath(simFile))
-output = sim.calc()
-#Write output to a text file
-fhandle = layerFile.split('.')[0].split('/')[-1]
-if fhandle == '':
-    fname = ('%s%ssimOutput.txt' % (saveLoc, os.sep))
-else:
+#Generate and execute simulation and plotting objects
+sims    = [sm.Simulate(layerFile=os.path.abspath(layerFile), simFile=os.path.abspath(simFile)) for layerFile in layerFiles]
+outputs = [sim.calc() for sim in sims]
+
+#Write simulated output to a text file
+fhandles = []
+for i in range(len(layerFiles)):
+    layerFile = layerFiles[i]
+    output    = outputs[i]
+    fhandle = layerFile.split('.')[0].split('/')[-1]
+    fhandles.append(fhandle)
     fname = ('%s%ssimOutput_%s.txt' % (saveLoc, os.sep, fhandle))
-np.savetxt(fname, np.array(output).T, fmt="%-12.4f", header=saveHdr)
+    np.savetxt(fname, np.array(output).T, fmt="%-12.4f", header=saveHdr)
 
-#Plot transmission
-plt = pl.Plot(saveLoc=plotLoc, fhandle=fhandle)
-plt.plotAll(output)
+#Gather measured data
+dats     = [ms.Measurement(dataFile=os.path.abspath(dataFile)) for dataFile in dataFiles]
+fhandles = fhandles + [dataFile.split('.')[0].split('/')[-1] for dataFile in dataFiles]
+outputs  = outputs  + [dat.loadData() for dat in dats]
+
+#Plot all data
+plt = pl.Plot(saveLoc=plotLoc, fhandle='_'.join(fhandles))
+plt.plotRefl( outputs, fhandles)
+plt.plotTrans(outputs, fhandles)
