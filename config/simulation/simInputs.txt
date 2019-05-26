@@ -1,17 +1,21 @@
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
 | Parameter     | Units | Value           | Description                                                                 |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
-| Inc Angle     | [deg] | 0.000 +/- 0.000 | Incident angle of radiation. If 'NA', use distribution in 'incAngle.txt'    |
+| Inc Angle     | [deg] | 5.700 +/- 0.000 | Incident angle of radiation. If 'NA', use distribution in 'incAngle.txt'    |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
 | Inc Pol Angle | [deg] | 0.000 +/- 0.000 | Incident angle of polarization. If 'NA', use distribution in 'polAngle.txt' |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
-| Low Freq      | [GHz] | 50.00           | Lowest frequency to be analyzed                                             |
+| Low Freq      | [GHz] | 70.00           | Lowest frequency to be analyzed                                             |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
-| High Freq     | [GHz] | 250.0           | Highest frequency to be analyzed                                            |
+| High Freq     | [GHz] | 175.0           | Highest frequency to be analyzed                                            |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
 | Freq Step     | [GHz] | 0.500           | Frequency step between low and high frequencies.                            |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
-| Num Trials    |  NA   | 50              | Number of trials to evaluate the simulation.                                |
+| Num Trials    |  NA   | 1               | Number of trials to evaluate the simulation.                                |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
 | Sim Method    |  NA   | HOU             | Simulation method. Allowed values = 'HOU'                                   |
++---------------+-------+-----------------+-----------------------------------------------------------------------------+
+| Band Centers  | [GHz] | [93.0,145.0]    | Array of band centers for bands to be overplotted. Default = 'NA'           |
++---------------+-------+-----------------+-----------------------------------------------------------------------------+
+| Bandwidths    |  NA   | [0.376,0.276]   | Array of bandwidths for bands to be overplotted. Default = 'NA'             |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+

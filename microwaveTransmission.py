@@ -4,8 +4,9 @@ import          os
 import numpy as np
 
 #Custom classes
-import src.simulate as sm
-import src.plot     as pl
+import src.simulate    as sm
+import src.plot        as pl
+import src.measurement as ms
 
 #Default configuration files
 layerFileDef = ('config'+os.sep+'layers'+os.sep+'layers.txt')
@@ -19,8 +20,9 @@ plotLoc = os.path.abspath('Plots')
 saveHdr = "%-11s%-26s%-26s%-26s%-26s%-26s%-26s" % ("Freq [GHz]", "P Trans (mean +/- std)", "S Trans (mean +/- std)", "P Refl (mean +/- std)", "S Refl (mean +/- std)", "P Absorb (mean +/- std)", "S Absorb (mean +/- std)")
 
 #For now, only ability is to simulate using Hou code
-allowedCmds = ['LF', 'SF', 'OP']
-allowedInst = ['UMich_Reflectometer']
+allowedCmds = ['LF', 'SF', 'DT']
+allowedInst = ['UMich_Reflectometer',
+               'Dick_CoherentSource']
 def help(val):
     print ("\nERROR: could not understand '%s'" % (val))
     print ("Usage: python microwaveTransmission.py -lf [layerFile] -sf [simFile] -nt [1] -sm [HOU]")
@@ -57,32 +59,34 @@ for arg in args:
                 sy.exit("\nERROR: could not find data file '%s'\n" % (dataFiles))
             inst = None
             for instrument in allowedInst:
-                if instrument in opFile:
+                if instrument in dataFile:
                     inst = instrument
             if inst is None:
                 print ("\nERROR: could not indenfity allowed instrument in passed file '%s' for overplotting" % (dataFile))
                 help(cmd)
 
 #Generate and execute simulation and plotting objects
-sims    = [sm.Simulate(layerFile=os.path.abspath(layerFile), simFile=os.path.abspath(simFile)) for layerFile in layerFiles]
-outputs = [sim.calc() for sim in sims]
+sims = [sm.Simulate(layerFile=os.path.abspath(layerFile), simFile=os.path.abspath(simFile)) for layerFile in layerFiles]
+for sim in sims:
+    sim.calc()
 
 #Write simulated output to a text file
 fhandles = []
 for i in range(len(layerFiles)):
     layerFile = layerFiles[i]
-    output    = outputs[i]
+    output    = sims[i].outputs
     fhandle = layerFile.split('.')[0].split('/')[-1]
     fhandles.append(fhandle)
     fname = ('%s%ssimOutput_%s.txt' % (saveLoc, os.sep, fhandle))
     np.savetxt(fname, np.array(output).T, fmt="%-12.4f", header=saveHdr)
 
 #Gather measured data
-dats     = [ms.Measurement(dataFile=os.path.abspath(dataFile)) for dataFile in dataFiles]
-fhandles = fhandles + [dataFile.split('.')[0].split('/')[-1] for dataFile in dataFiles]
-outputs  = outputs  + [dat.loadData() for dat in dats]
+dats = [ms.Measurement(dataFile=os.path.abspath(dataFile)) for dataFile in dataFiles]
+for dat in dats:
+    dat.loadData()
+#fhandles = fhandles + [dataFile.split('.')[0].split('/')[-1] for dataFile in dataFiles]
 
 #Plot all data
-plt = pl.Plot(saveLoc=plotLoc, fhandle='_'.join(fhandles))
-plt.plotRefl( outputs, fhandles)
-plt.plotTrans(outputs, fhandles)
+plt = pl.Plot(sims, dats, saveLoc=plotLoc)
+plt.plotTrans()
+plt.plotRefl()
