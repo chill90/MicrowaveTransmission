@@ -14,9 +14,11 @@ class Layers:
         #Parse file for layer parameters
         layers, thicks, indexes, lossTans = np.loadtxt(self.file, comments='+-', skiprows=2, delimiter='|', dtype=np.str, unpack=True)[1:-1]
         #Build dictionaries of dielectric layers
-        self.layers = cl.OrderedDict({layers[i]: {"Thickness": pm.Parameter("Thickness", thicks[i],   unit=un.mm_to_m, min=0.0, max=np.inf),
-                                                  "Index":     pm.Parameter("Index",     indexes[i],                   min=0.0, max=np.inf),
-                                                  "LossTan":   pm.Parameter("LossTan",   lossTans[i], unit=1.e-04,     min=0.0, max=np.inf)} for i in range(len(layers))})
+        self.layers = cl.OrderedDict({})
+        for i in range(len(layers)):
+            self.layers[layers[i]] = {"Thickness": pm.Parameter("Thickness", thicks[i],   unit=un.mm_to_m, min=0.0, max=np.inf),
+                                      "Index":     pm.Parameter("Index",     indexes[i],                   min=0.0, max=np.inf),
+                                      "LossTan":   pm.Parameter("LossTan",   lossTans[i], unit=1.e-04,     min=0.0, max=np.inf)}
         
     #Method to sample layers
     def sample(self):

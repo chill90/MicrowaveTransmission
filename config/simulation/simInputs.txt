@@ -1,7 +1,7 @@
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
 | Parameter     | Units | Value           | Description                                                                 |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
-| Inc Angle     | [deg] | 5.700 +/- 0.000 | Incident angle of radiation. If 'NA', use distribution in 'incAngle.txt'    |
+| Inc Angle     | [deg] | 0.000 +/- 0.000 | Incident angle of radiation. If 'NA', use distribution in 'incAngle.txt'    |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
 | Inc Pol Angle | [deg] | 0.000 +/- 0.000 | Incident angle of polarization. If 'NA', use distribution in 'polAngle.txt' |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
@@ -15,7 +15,7 @@
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
 | Sim Method    |  NA   | HOU             | Simulation method. Allowed values = 'HOU'                                   |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
-| Band Centers  | [GHz] | [93.0,145.0]    | Array of band centers for bands to be overplotted. Default = 'NA'           |
+| Band Centers  | [GHz] | [89.5,147.8]    | Array of band centers for bands to be overplotted. Default = 'NA'           |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
-| Bandwidths    |  NA   | [0.376,0.276]   | Array of bandwidths for bands to be overplotted. Default = 'NA'             |
+| Bandwidths    |  NA   | [0.324,0.260]   | Array of bandwidths for bands to be overplotted. Default = 'NA'             |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
