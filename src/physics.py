@@ -12,7 +12,6 @@ class Physics:
     def __init__(self):
         #***** Private variables
         self.__GHz = 1.e9  #GHz from Hz
-        self.__pb2 = PB2() #PB2 parameters
         
         # *****Public variables *****
         #Physical Constants
@@ -164,7 +163,7 @@ class Physics:
     #Throughput for a diffraction-limited detector [m^2]
     def AOmega(self, freq, nModes=None):
         if nModes == None:
-            nModes = self.__pb2.nModes
+            nModes = 1.
 
         return nModes*(float(self.c)/freq)**2
 
@@ -180,7 +179,7 @@ class Physics:
         if temp == None:
             temp=self.Tcmb
         if nModes == None:
-            nModes == self.__pb2.nModes
+            nModes == 1.
 
         return 0.5*self.AOmega(freq, nModes)*self.bbSpecRad(emissivity, freq, temp)
 
@@ -189,7 +188,7 @@ class Physics:
         if temp == None:
             temp = self.Tcmb
         if nModes == None:
-            nModes = self.__pb2.nModes
+            nModes = 1.
 
         freq1, freq2 = self.bandEdges(freq, fbw)
         if callable(emissivity):
@@ -202,7 +201,7 @@ class Physics:
         if temp == None:
             temp = self.Tcmb
         if nModes == None:
-            nModes = self.__pb2.nModes
+            nModes = 1.
 
         return self.bbPowSpec(emissivity, freq, temp)/self.aniPowSpec(emissivity, freq, self.Tcmb)
     
@@ -211,7 +210,7 @@ class Physics:
         if temp == None:
             temp = self.Tcmb
         if nModes == None:
-            nModes = self.__pb2.nModes
+            nModes = 1.
 
         freq1, freq2 = bandEdges(freq, fbw)
         if callable(emissivity):

@@ -5,9 +5,9 @@
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
 | Inc Pol Angle | [deg] | 0.000 +/- 0.000 | Incident angle of polarization. If 'NA', use distribution in 'polAngle.txt' |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
-| Low Freq      | [GHz] | 70.00           | Lowest frequency to be analyzed                                             |
+| Low Freq      | [GHz] | 200.0           | Lowest frequency to be analyzed                                             |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
-| High Freq     | [GHz] | 175.0           | Highest frequency to be analyzed                                            |
+| High Freq     | [GHz] | 300.0           | Highest frequency to be analyzed                                            |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
 | Freq Step     | [GHz] | 0.500           | Frequency step between low and high frequencies.                            |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
@@ -15,7 +15,7 @@
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
 | Sim Method    |  NA   | HOU             | Simulation method. Allowed values = 'HOU'                                   |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
-| Band Centers  | [GHz] | [89.5,147.8]    | Array of band centers for bands to be overplotted. Default = 'NA'           |
+| Band Centers  | [GHz] | [225.0,278.0]   | Array of band centers for bands to be overplotted. Default = 'NA'           |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
-| Bandwidths    |  NA   | [0.324,0.260]   | Array of bandwidths for bands to be overplotted. Default = 'NA'             |
+| Bandwidths    |  NA   | [0.200,0.150]   | Array of bandwidths for bands to be overplotted. Default = 'NA'             |
 +---------------+-------+-----------------+-----------------------------------------------------------------------------+
